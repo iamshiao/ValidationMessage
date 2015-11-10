@@ -42,10 +42,9 @@ namespace ValidationMessage.Controllers
     {
         public DateTime LoginAt { get; set; }
         [Required]
-        [Remote("CheckIfAccountRepeated", "Validate", ErrorMessage = "The account is already exist.")]
+        [Remote("CheckIfAccountRepeated", "Home", ErrorMessage = "帳號已存在")]
         public string Account { get; set; }
-        [Required]
-        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "必填欄位")]
         public string Password { get; set; }
         [Required]
         public string Name { get; set; }

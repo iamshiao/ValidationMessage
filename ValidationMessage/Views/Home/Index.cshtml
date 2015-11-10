@@ -12,21 +12,22 @@
         <div class="form-group">
             @Html.LabelFor(m => m.Account, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Account, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.Account, new { @class = "form-control", id = "txtAccount" })
+                @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
-                @*@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "txtPassword" })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.Label("lblConfirmPassword", "Confirm Password", new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBox("txtConfirmPassword", null, new { @class = "form-control required" })
+                @Html.Password("txtConfirmPassword", null, new { @class = "form-control required", id = "txtConfirmPassword" })
+                @*@Html.ValidationMessageFor(m=>m.?)*@
                 @Html.ValidationMessage("txtConfirmPassword", null, new { @class = "text-danger" })
             </div>
         </div>
@@ -34,25 +35,25 @@
             @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                @*@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Age, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
                 @Html.TextBoxFor(m => m.Age, new { @class = "form-control" })
-                @*@Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })*@
+                @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Descr, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Descr, new { @class = "form-control required" })
+                @Html.TextAreaFor(m => m.Descr, new { @class = "form-control required" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="btnMine" type="submit" class="btn btn-default form-control" value="Submit" />
+                <input id="btnMine" type="button" class="btn btn-default form-control" value="Submit" />
             </div>
         </div>
     }
@@ -60,13 +61,22 @@
 
 @section scripts{
     <script>
-        $.extend($.validator.messages, {
-            required: "*必填欄位",
-            min: $.validator.format("*年齡須大於{0}")
+        $(function () {
+            $.validator.addMethod('pwDiff', function (value, el, param) {
+                //console.log(value);
+                //console.log($('#txtPassword').val());
+                //console.log($('#txtPassword').val() != value);
+                return $('#txtPassword').val() == value;
+            }, "Password isn't the same");
+
+            $("input[name=txtConfirmPassword]").rules("add", {
+                pwDiff: $("input[name=txtConfirmPassword]").val()
+            });
         });
+
         //$("#form1").validate();
-        //$('#btnMine').click(function () {
-        //    $('#form1').valid();            
-        //});
+        $('#btnMine').click(function () {
+            $('#form1').valid();
+        });
     </script>
 }
